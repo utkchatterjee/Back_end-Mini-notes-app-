@@ -1,6 +1,14 @@
 //server
 //app.js
 
+//set up express
+const express = require('express')
+const app=express()
+app.use(express.json())
+app.listen(3000, ()=>console.log('Running on port 3000'))
+
+
+
 let notes=[];
 let nextId=1;
 
@@ -16,11 +24,11 @@ app.get('/app/notes/:id', (req,res) => {
     res.json(reqnote);
 });
 
-app.post('/app/notes', (req,res) => {
+app.post('/app/new', (req,res) => {
     const note= {
         id: nextId++,
         text: req.body.text,
-        createdAt: new Date().toISOString
+        createdAt: new Date().toISOString()
     };
     notes.push(note);
     res.status(201).json(note); //send back the full note with id
@@ -28,6 +36,6 @@ app.post('/app/notes', (req,res) => {
 
 app.delete('/app/notes/:id', (req,res) => {
     const id=Number(req.params.id);
-    notes=notes.filter(note=>note.params.id!==id);
-    res.status(204).json(message:"Note was successfully deleted");
+    notes=notes.filter(note=>note.id!==id);
+    res.status(200).json({message:"Note was successfully deleted"}); //status code 200 signifying that the request was successful
 })
